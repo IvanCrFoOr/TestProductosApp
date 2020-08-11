@@ -1,0 +1,33 @@
+﻿@model List<Web.Models.ProductsResponse.ObjectResult>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Productos</h2>
+<p>
+    <h3 class="text-right">@Html.ActionLink("Agregar Producto", "Crud", "Products")</h3>
+</p>
+<div class="container-fluid">
+    <div class="row col-md-12 table-responsive">
+        @{
+
+            var grid = new WebGrid(source: Model, ajaxUpdateContainerId: "grid", rowsPerPage: 5, canSort: true, ajaxUpdateCallback: "");
+            <div data-spy="scroll" data-target="#">
+                @MvcHtmlString.Create(grid.GetHtml(
+               tableStyle: "table",
+               headerStyle: "",
+               alternatingRowStyle: "alt", htmlAttributes: new { id = "grid" },
+               columns: grid.Columns(
+                   grid.Column("IdProduct", header: "ID"),
+                   grid.Column("Name", header: "TOTAL"),
+                   grid.Column("Cost", header: "FECHA"),
+                   grid.Column("", "Detalle", format: @<text>
+                            <a href="~/Products/Delete/@item.IdProduct" title="Borrar">Borrar</a>
+                </text>)
+            )
+        ).ToString())
+            </div>
+        }
+    </div>
+
+</div>
