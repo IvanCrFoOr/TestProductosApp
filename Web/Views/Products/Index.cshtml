@@ -19,11 +19,14 @@
                alternatingRowStyle: "alt", htmlAttributes: new { id = "grid" },
                columns: grid.Columns(
                    grid.Column("IdProduct", header: "ID"),
-                   grid.Column("Name", header: "TOTAL"),
-                   grid.Column("Cost", header: "FECHA"),
+                   grid.Column("Name", header: "Nombre"),
+                   grid.Column("Description", header: "Descripcion"),
+                   grid.Column("Cost", header: "Costo"),
+                   grid.Column("IdCategory", header: "Categoria"),
                    grid.Column("", "Detalle", format: @<text>
                             <a href="~/Products/Delete/@item.IdProduct" title="Borrar">Borrar</a>
-                </text>)
+                </text>),
+                   grid.Column("","Editar", format: @<text><a href="~/Products/Crud/@item.IdProduct" title="Editar">Editar</a></text>)
             )
         ).ToString())
             </div>

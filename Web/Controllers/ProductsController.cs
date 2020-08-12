@@ -25,9 +25,15 @@ namespace Web.Controllers
             return View(model);
         }
 
-        public ActionResult Crud()
+        public ActionResult Crud(int id=0)
         {
-            return View();
+            var req = (Models.ProductsResponse)service.ConsumeApiService(typeof(Models.ProductsResponse), "https://localhost:44352/api/Products/GetId?id=" + id, "", RestSharp.Method.GET);
+            //var model = new Models.ProductsResponse.ObjectResult() { IdProduct= req.objectResult };
+            
+            
+            
+            
+            return View(req.objectResult[0]);
         }
 
         [HttpPost]
@@ -35,8 +41,14 @@ namespace Web.Controllers
         {
             entity.Active = true;
             var request = JsonConvert.SerializeObject(entity);
-            var req = (Models.ProductsResponse)service.ConsumeApiService(typeof(Models.ProductsResponse), "https://localhost:44352/api/Products/AddProduct", request, RestSharp.Method.POST);
-            
+            if (entity.IdProduct == 0)
+            {
+                var req = (Models.ProductsResponse)service.ConsumeApiService(typeof(Models.ProductsResponse), "https://localhost:44352/api/Products/AddProduct", request, RestSharp.Method.POST);
+            }
+            else
+            {
+                var req = (Models.ProductsResponse)service.ConsumeApiService(typeof(Models.ProductsResponse), "https://localhost:44352/api/Products/UpdateProduct", request, RestSharp.Method.PATCH);
+            }
             return RedirectToAction("Index", "Products");
         }
 
