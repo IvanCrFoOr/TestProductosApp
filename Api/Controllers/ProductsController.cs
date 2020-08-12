@@ -80,5 +80,58 @@ namespace Api.Controllers
             }
             return result;
         }
+
+        [HttpGet]
+        [Route("api/Products/GetId")]
+        public Models.Result GetId(int id)
+        {
+            var result = new Models.Result();
+            try
+            {
+                using (var db = new Domain.Entities.TESTPRODUCTSEntities())
+                {
+
+                    result.ObjectResult = db.PRODUCTS.ToList().Where(x => x.IdProduct == id);
+                    result.Details = "GetAll Suuccessful";
+                    result.Status = Models.Result.Estatus.Ok;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Status = Models.Result.Estatus.Error;
+                result.Details = e.Message;
+            }
+            return result;
+        }
+
+        [HttpPatch]
+        [Route("api/Products/UpdateProduct")]
+        public Models.Result UpdateProduct(Domain.Entities.PRODUCTS entity)
+        {
+            var result = new Models.Result();
+            try
+            {
+                using (var db = new Domain.Entities.TESTPRODUCTSEntities())
+                {
+                    var product = db.PRODUCTS.FirstOrDefault(x => x.IdProduct == entity.IdProduct);
+                    product.IdCategory = entity.IdCategory;
+                    product.Name = entity.Name;
+                    product.Unit = entity.Unit;
+                    product.Cost = entity.Cost;
+                    product.Active = entity.Active;
+                    product.Description = entity.Description;
+                    db.Entry(product).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    result.Details = "Update Suuccessful";
+                    result.Status = Models.Result.Estatus.Ok;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Status = Models.Result.Estatus.Error;
+                result.Details = e.Message;
+            }
+            return result;
+        }
     }
 }
